@@ -53,10 +53,10 @@ namespace EndConversationTest
             message.Locale = "en-Us";
             message.ServiceUrl = serviceUrl;
 
-            AbortConversation(message).ConfigureAwait(false);
+            AbortConversation(message, "Timer fired.").ConfigureAwait(false);
         }
 
-        public static async Task AbortConversation(Activity message)
+        public static async Task AbortConversation(Activity message, string timerMessage = "")
         {
             if (_timer != null)
             {
@@ -79,7 +79,7 @@ namespace EndConversationTest
                 await botData.FlushAsync(token);
 
                 var botToUser = scope.Resolve<IBotToUser>();
-                await botToUser.PostAsync(message.CreateReply("Timer fired.  Conversation aborted."));
+                await botToUser.PostAsync(message.CreateReply($"{timerMessage}  Conversation aborted."));
             }
         }
     }
